@@ -7,7 +7,7 @@ use std::io::{stdin, stdout, Write};
 use clap::{Parser, ArgAction};
 use log::{info, LevelFilter};
 use simplelog::*;
-use anyhow::{Result, bail};
+use anyhow::Result;
 use memflow::prelude::v1::*;
 use memflow_native;
 use output::Output;
