@@ -11,8 +11,8 @@ namespace CS2Dumper.Offsets {
         public const nint dwGameRules = 0x1A84170;
         public const nint dwGlobalVars = 0x1867DB0;
         public const nint dwGlowManager = 0x1A84190;
-        public const nint dwLocalPlayerController = 0x1A6E9C000;
-        public const nint dwLocalPlayerPawn = 0x187405000;
+        public const nint dwLocalPlayerController = 0x1A6E9C0;
+        public const nint dwLocalPlayerPawn = 0x1874050;
         public const nint dwPlantedC4 = 0x1A8E4A0;
         public const nint dwPrediction = 0x1873ED0;
         public const nint dwSensitivity = 0x1A85768;
