@@ -5,9 +5,9 @@ use std::time::Instant;
 use std::io::{stdin, stdout, Write};
 
 use clap::{Parser, ArgAction};
-use log::{info, LevelFilter};
+use log::{info, warn, error, LevelFilter};
 use simplelog::*;
-use anyhow::Result;
+use anyhow::{Result, bail};
 use memflow::prelude::v1::*;
 use memflow_native;
 use output::Output;
@@ -44,6 +44,55 @@ struct Args {
     no_log_file: bool,
 }
 
+fn print_banner() {
+    println!("\x1b[93m");
+    println!("╔════════════════════════════════════════════════════════════╗");
+    println!("║    ██████╗ ██╗   ██╗███╗   ███╗██████╗ ███████╗██████╗     ║");
+    println!("║    ██╔══██╗██║   ██║████╗ ████║██╔══██╗██╔════╝██╔══██╗    ║");
+    println!("║    ██║  ██║██║   ██║██╔████╔██║██████╔╝█████╗  ██████╔╝    ║");
+    println!("║    ██║  ██║██║   ██║██║╚██╔╝██║██╔═══╝ ██╔══╝  ██╔══██╗    ║");
+    println!("║    ██████╔╝╚██████╔╝██║ ╚═╝ ██║██║     ███████╗██║  ██║    ║");
+    println!("║    ╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝    ║");
+    println!("║                                                            ║");
+    println!("║      Counter-Strike 2 Offset Dumper — REWORKED EDITION     ║");
+    println!("║                                                            ║");
+    println!("║  github: github.com/MyArchiveProjects                      ║");
+    println!("║  original: github.com/a2x/cs2-dumper                       ║");
+    println!("╠════════════════════════════════════════════════════════════╣");
+    println!("║  [1] Dump .cs only                                         ║");
+    println!("║  [2] Dump .cs + .json                                      ║");
+    println!("║  [3] Info / About                                          ║");
+    println!("║  [4] Exit                                                  ║");
+    println!("╚════════════════════════════════════════════════════════════╝");
+    println!("\x1b[0m");
+}
+
+fn print_prefix_info(msg: &str) {
+    println!("\x1b[92m[ OK ]\x1b[0m {}", msg);
+}
+
+fn print_prefix_warn(msg: &str) {
+    println!("\x1b[93m[WARN]\x1b[0m {}", msg);
+}
+
+fn print_prefix_err(msg: &str) {
+    println!("\x1b[91m[ERR ]\x1b[0m {}", msg);
+}
+
+fn print_info_page() {
+    println!("\x1b[94m--- About This Tool ---\x1b[0m");
+    println!("This is a reworked fork of cs2-dumper for dumping offsets from Counter-Strike 2.");
+    println!("Supports memflow and has selectable output formats (.cs only or .cs + .json).");
+    println!("GitHub (fork): https://github.com/MyArchiveProjects");
+    println!("GitHub (original): https://github.com/a2x/cs2-dumper");
+}
+
+fn pause_exit() {
+    println!("\x1b[90m[>] Press Enter to exit...\x1b[0m");
+    let mut dummy = String::new();
+    let _ = stdin().read_line(&mut dummy);
+}
+
 fn main() -> Result<()> {
     let mut args = Args::parse();
 
@@ -73,20 +122,28 @@ fn main() -> Result<()> {
     CombinedLogger::init(loggers)?;
 
     if args.file_types == vec!["cs"] {
-        println!("\n[?] Select output format:");
-        println!("[1] cs only");
-        println!("[2] cs + json");
-        print!("> Enter 1 or 2 and press Enter: ");
+        print_banner();
+        print!("\x1b[96m[>]\x1b[0m Your choice: ");
         stdout().flush()?;
 
         let mut input = String::new();
         stdin().read_line(&mut input)?;
         let input = input.trim();
 
-        args.file_types = match input {
-            "2" => vec!["cs".to_string(), "json".to_string()],
-            _ => vec!["cs".to_string()],
-        };
+        match input {
+            "2" => args.file_types = vec!["cs".to_string(), "json".to_string()],
+            "3" => {
+                print_info_page();
+                pause_exit();
+                return Ok(());
+            },
+            "4" => {
+                print_prefix_info("Exiting...");
+                pause_exit();
+                return Ok(());
+            },
+            _ => args.file_types = vec!["cs".to_string()],
+        }
     }
 
     let conn_args = args
@@ -125,7 +182,7 @@ fn main() -> Result<()> {
 
     output.dump_all(&mut process)?;
 
-    info!("Analysis completed in {:.2?}", now.elapsed());
-
+    print_prefix_info(&format!("Analysis completed in {:.2?}", now.elapsed()));
+    pause_exit();
     Ok(())
 }
