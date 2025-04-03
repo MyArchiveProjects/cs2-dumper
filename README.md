@@ -1,59 +1,57 @@
-# cs2-dumper (modified fork)
+# CS2 Offset Dumper — REWORKED EDITION
 
-Fork of the original [cs2-dumper](https://github.com/a2x/cs2-dumper) with a cleaner structure, reduced number of files, and additional dumping options.
-
-This version introduces:
-- Cleaner file organization
-- Optional output selection:
-  - `.cs` files only
-  - `.cs` + `.json`
-- Small internal improvements and fixes
-
-Supports both Windows & Linux, powered by [memflow](https://github.com/memflow/memflow).
-
-For Linux users, refer to the original [linux branch](https://github.com/a2x/cs2-dumper/tree/linux) (may be outdated).
+🔥 Fork of the original [cs2-dumper](https://github.com/a2x/cs2-dumper), redesigned for style, usability, and clarity. This version delivers a complete overhaul of the interface and functionality.
 
 ---
 
-## Getting Started
+## 💡 What's New
 
-Download latest release or compile manually. Requires Rust 1.74.0+.
+- ✅ Fully interactive **checkbox menu** to select which file types to generate (`.cs`, `.json`, `.hpp`, `.rs`)
+- 💨 Automatic **console clear** for a clean look before and after selections
+- 🎨 **Styled output** with colorful tags: `[ OK ]`, `[ERR ]`, `[WARN]`, `[>]`
+- 📦 Smarter defaults, fewer steps, less clutter
+- ✍️ Custom ASCII art banner & enhanced UX
+- 📝 Still powered by [`memflow`](https://github.com/memflow/memflow)
 
-### Usage
+---
 
-1. Start CS2 (main menu is enough).
-2. Run the `cs2-dumper` executable.
+## 📦 File Output Options
 
-By default, it uses `memflow-native`. To use another memflow connector, pass the connector name and optional args.
+You can choose any combination of:
 
-Example for pcileech:
-```
-cs2-dumper -c pcileech -a :device=FPGA -vv
-```
+- `cs`     → C# bindings
+- `hpp`    → C++ header
+- `json`   → structured raw dump
+- `rs`     → Rust output
 
-Some connectors (like `kvm`, `pcileech`, or `winio`) require admin/root privileges.
+---
 
-### Arguments
+## 🚀 Usage
 
-- `-c, --connector <connector>`: Memflow connector.
-- `-a, --connector-args <args>`: Arguments for connector.
-- `-f, --file-types <types>`: What to generate. Default: `cs`, `hpp`, `json`, `rs`.
-- `-i, --indent-size <n>`: Spaces per indent. Default: 4.
-- `-o, --output <dir>`: Output directory. Default: `output`.
-- `-p, --process-name <name>`: Game process name. Default: `cs2.exe`.
-- `-v...`: Verbose logging (can be stacked).
-- `-h, --help`: Show help.
-- `-V, --version`: Show version.
+1. Run CS2 (main menu is enough).
+2. Launch this tool.
+3. Select desired output formats via interactive checkbox menu.
+4. Done — results are saved in `/output`.
 
-### Tests
+---
 
-Run basic tests with:
-```
-cargo test -- --nocapture
+## ⚙️ Requirements
+
+- Rust 1.74+
+- Admin rights (on Windows) or `sudo` (on Linux) for low-level memory access
+
+---
+
+## 🛠 Example
+
+```sh
+cargo run --release
 ```
 
 ---
 
-## License
+## 📄 License
 
-MIT — see original [LICENSE](./LICENSE)
+MIT (c) 2024-2025  
+Fork by [MyArchiveProjects](https://github.com/MyArchiveProjects)  
+Original by [a2x](https://github.com/a2x/cs2-dumper)
