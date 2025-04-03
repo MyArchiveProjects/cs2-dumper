@@ -1,53 +1,59 @@
-# cs2-dumper
+# cs2-dumper (modified fork)
 
-An external offset/interface dumper for Counter-Strike 2, with support for both Windows & Linux. Powered
-by [memflow](https://github.com/memflow/memflow).
+Fork of the original [cs2-dumper](https://github.com/a2x/cs2-dumper) with a cleaner structure, reduced number of files, and additional dumping options.
 
-The native Linux version is available in the [linux](https://github.com/a2x/cs2-dumper/tree/linux) branch (currently
-outdated).
+This version introduces:
+- Cleaner file organization
+- Optional output selection:
+  - `.cs` files only
+  - `.cs` + `.json`
+- Small internal improvements and fixes
 
-For a work-in-progress offline version, check out the [cs2-analyzer](https://github.com/a2x/cs2-analyzer) repository or
-view its included web demo [here](https://a2x.github.io/cs2-analyzer).
+Supports both Windows & Linux, powered by [memflow](https://github.com/memflow/memflow).
+
+For Linux users, refer to the original [linux branch](https://github.com/a2x/cs2-dumper/tree/linux) (may be outdated).
+
+---
 
 ## Getting Started
 
-You can download the latest release from [Releases](https://github.com/a2x/cs2-dumper/releases) or compile it yourself.
-Note that compiling it yourself requires your Rust compiler version to be at least 1.74.0 or newer.
+Download latest release or compile manually. Requires Rust 1.74.0+.
 
-## Usage
+### Usage
 
-1. Ensure the game is running (Being in the main menu should suffice).
+1. Start CS2 (main menu is enough).
 2. Run the `cs2-dumper` executable.
 
-_Note:_ If you run the executable without specifying an optional memflow connector name, it will automatically use the
-[memflow-native](https://github.com/memflow/memflow-native) OS layer to read the memory of the game process. If you
-wish to use an existing memflow connector instead, such as **pcileech** or **kvm**, you can pass the `connector` and
-optional `connector-args` arguments to the program. These connectors can be installed and managed using
-the [memflowup](https://github.com/memflow/memflowup) tool.
+By default, it uses `memflow-native`. To use another memflow connector, pass the connector name and optional args.
 
-E.g (for pcileech). `cs2-dumper -c pcileech -a :device=FPGA -vv`
+Example for pcileech:
+```
+cs2-dumper -c pcileech -a :device=FPGA -vv
+```
 
-Certain connectors, such as the [kvm](https://github.com/memflow/memflow-kvm) connector on Linux or
-the [pcileech](https://github.com/memflow/memflow-pcileech) / [winio](https://github.com/a2x/memflow-winio)
-connectors on Windows, require elevated privileges to work. So either run the `cs2-dumper` executable with `sudo` on
-Linux or as an administrator on Windows.
+Some connectors (like `kvm`, `pcileech`, or `winio`) require admin/root privileges.
 
-### Available Arguments
+### Arguments
 
-- `-c, --connector <connector>`: The name of the memflow connector to use.
-- `-a, --connector-args <connector-args>`: Additional arguments to pass to the memflow connector.
-- `-f, --file-types <file-types>`: The types of files to generate. Default: `cs`, `hpp`,  `json`, `rs`.
-- `-i, --indent-size <indent-size>`: The number of spaces to use per indentation level. Default: `4`.
-- `-o, --output <output>`: The output directory to write the generated files to. Default: `output`.
-- `-p, --process-name <process-name>`: The name of the game process. Default: `cs2.exe`.
-- `-v...`: Increase logging verbosity. Can be specified multiple times.
-- `-h, --help`: Print help.
-- `-V, --version`: Print version.
+- `-c, --connector <connector>`: Memflow connector.
+- `-a, --connector-args <args>`: Arguments for connector.
+- `-f, --file-types <types>`: What to generate. Default: `cs`, `hpp`, `json`, `rs`.
+- `-i, --indent-size <n>`: Spaces per indent. Default: 4.
+- `-o, --output <dir>`: Output directory. Default: `output`.
+- `-p, --process-name <name>`: Game process name. Default: `cs2.exe`.
+- `-v...`: Verbose logging (can be stacked).
+- `-h, --help`: Show help.
+- `-V, --version`: Show version.
 
-## Running Tests
+### Tests
 
-To run the few basic provided tests, use the following command: `cargo test -- --nocapture`.
+Run basic tests with:
+```
+cargo test -- --nocapture
+```
+
+---
 
 ## License
 
-Licensed under the MIT license ([LICENSE](./LICENSE)).
+MIT — see original [LICENSE](./LICENSE)
