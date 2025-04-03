@@ -17,7 +17,7 @@ mod output;
 mod source2;
 
 #[derive(Debug, Parser)]
-#[command(author = "VacBan Team", version = "2.0", about = "CS2 Offset Dumper with Memflow")]
+#[command(author = "MyArchiveProjects", version = "0.1.0-rework", about = "CS2 Offset Dumper with Memflow reworked")]
 struct Args {
     #[arg(short, long)]
     connector: Option<String>,
